@@ -1,0 +1,58 @@
+from django.shortcuts import render, redirect
+
+from .models import Room
+from .forms import RoomForm
+
+
+
+# Create your views here.
+def home(request):
+    rooms = Room.objects.all()
+    context = {'rooms': rooms}
+    return render(request, 'base/home.html', context)
+
+def room(request, pk):
+    room = Room.objects.get(id=pk)
+    context = context = {'room': room}
+    return render(request, 'base/room.html', context)
+
+def createRoom(request):
+    form = RoomForm()
+    
+    if request.method == 'POST':
+        # Fetches data from request to form
+        form = RoomForm(request.POST)
+        if form.is_valid():
+            form.save()
+            #return to page based on name
+            return redirect("home")
+    context = {'form': form}
+    
+    return render(request, 'base/room_form.html', context)
+
+def updateRoom(request, pk):
+    
+    room = Room.objects.get(id=pk)
+    
+    # instance of form that is prefilled
+    form = RoomForm(instance=room)
+    
+    if request.method == 'POST':
+        #replace the instance that was fetched
+        form = RoomForm(request.POST, instance=room)
+        if form.is_valid:
+            form.save()
+            return redirect('home')
+        
+        
+    
+    context = {'form': form}
+    return render(request, 'base/room_form.html', context)
+
+def deleteRoom(request, pk):
+    room = Room.objects.get(id=pk)
+    if request.method == 'POST':
+        room.delete()
+        return redirect('home')
+    return render(request, 'base/delete.html', {'obj': room})
+    
