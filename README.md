@@ -60,6 +60,31 @@
    1. `{{% for x in render_variable %}}`
 3. Can pass variables using render function
    1. `render(request, 'home.html', {'rooms': rooms})`
+4. Concatenate url
+   1. `"{% url 'delete-room' room.id %}"`
+5. Query URL
+   1. `"{% url 'home' %}?q={{topic.name}}"`
+6. Query filter requires input 
+   1. View requires the following
+```python 
+   q = request.GET.get('q') if request.GET.get('q') != None else ''
+   rooms = Room.objects.filter(
+      Q(topic__name__icontains=q) | 
+      Q(name__icontains=q) |
+      Q(description__icontains=q))
+```
+# set input as place holder for searches to filter
+```html
+<form method="GET" action="{% url 'home' %}">
+    <input type="text" name="q" placeholder="Search Rooms..."/>
+</form>
+
+```
+# HREF a query for search bar
+```html
+<a href="{% url 'home' %}?q={{topic.name}}">{{topic.name}}</a>
+```
+```
 ## Commands
 
   1. `django-admin` - shows subcommands 
