@@ -14,11 +14,20 @@
 3. asgi - asynchronous calls
 4. settings.py - core project ocnfiguration regarding app installs, urls formatting,database formatting, etc 
    1. Update application definitions in `INSTALLED_APPS` for example, `base.apps.BaseConfig`
+      ```    if request.method == 'POST':
+        messages = Message.objects.create(
+            user=request.user,
+            room=room,
+            body=request.POST.get('body')
+        )
+      ```
 
 ## App Files
 
 1. `views.py` - where your application views go
    1. use render to render templates to views
+   2. On saving models you can use form save or the create option for the model
+      1. 
 2. `apps.py` - provides application configuration
    1. app will have its own views that are passed here from `base.views.View`
 3. `urls.py` - where your url patterns for the app resides, configuration endpoint with views
@@ -31,6 +40,7 @@
          1. `auto_now_add=True` - timestamp set when created
       4. `models.ForeignKey(Room, on_delete=models.CASCADE)` - adding a foreign key for a many to one relationship established by child model
       5. you can query the foreign key that is connected to the object you query
+      6. can fetch set of child as follows: `messages = Room.message_set.all()`
 5. `admin.py` - where you register your models to site so you can view it in admin dashboard
 6. `forms.py` - similar to django serializers, you create meta and specify fields
 
@@ -120,6 +130,10 @@
    4. redirect when user is authenticated or if user requires auth for that page
    5. use context for login and registration options
 
+## chat crud
+
+1. Steps to complete
+   1. Create POST options to get inputs for messages
 
 ## django messages
 
