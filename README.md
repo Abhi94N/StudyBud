@@ -84,7 +84,7 @@
 ```html
 <a href="{% url 'home' %}?q={{topic.name}}">{{topic.name}}</a>
 ```
-```
+
 ## Commands
 
   1. `django-admin` - shows subcommands 
@@ -105,3 +105,23 @@
    1. id will have id parameter for response
 5. Create template for the view at application level
    1. leverage template inheritence and ability to pass context from render
+
+
+## Authentication
+
+1. Django built in session
+2. Navigate to chrome console and go to `application->cookies` to view session
+3. Do not call login view as login as it is a function in django
+4. `from django.contrib.auth.decorators import login_required` if user is not logged in add this decorator
+5. Steps to complete
+   1. Create login and logout page and views
+   2. Check if authenticated in both views and templates
+   3. Show info or template componants based on auth status
+   4. redirect when user is authenticated or if user requires auth for that page
+   5. use context for login and registration options
+
+
+## django messages
+
+1. `from django.contrib import messages`
+2. `https://docs.djangoproject.com/en/4.0/ref/contrib/messages/`
