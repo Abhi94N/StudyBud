@@ -51,6 +51,7 @@
 2. Template Inheritence
    1. create a html template and then use include to use it on other html pages
       1. `{% include 'navbar.html' %}`
+      2. Split divs into component htmls that can be included in other page content
    2. main.html where common includes exist
       1. `{% extends 'main.html' %}`
 3. App templates
@@ -123,7 +124,7 @@
 2. Navigate to chrome console and go to `application->cookies` to view session
 3. Do not call login view as login as it is a function in django
 4. `from django.contrib.auth.decorators import login_required` if user is not logged in add this decorator
-5. Steps to complete
+5. Steps completed
    1. Create login and logout page and views
    2. Check if authenticated in both views and templates
    3. Show info or template componants based on auth status
@@ -132,8 +133,10 @@
 
 ## chat crud
 
-1. Steps to complete
+1. Steps completed
    1. Create POST options to get inputs for messages
+2. Haven't complted
+   1. Option to edit messages
 
 ## django messages
 
