@@ -142,3 +142,13 @@
 
 1. `from django.contrib import messages`
 2. `https://docs.djangoproject.com/en/4.0/ref/contrib/messages/`
+
+
+## Static files
+
+1. Like Templates create root static files with styles and image folder
+2. Create a variable `STATICFILES_DIRS = [BASE_DIR / 'static']` in settings.json
+3. load static using following: `{% load static %}`
+4. reference stylesheet similar to url and template `    <link rel="stylesheet" type='text/css' media='screen' href="{% static 'styles/main.css' %}">`
+5. To add images `<img src="{% static 'images/image.png' %}">`
+6. To add user upload images

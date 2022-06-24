@@ -120,6 +120,14 @@ USE_TZ = True
 
 STATIC_URL = 'static/'
 
+#Static files 
+STATICFILES_DIRS = [
+    BASE_DIR / 'static'
+                    ]
+
+#Used for custom user images like profile image
+#STATIC_ROOT
+
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.0/ref/settings/#default-auto-field
 

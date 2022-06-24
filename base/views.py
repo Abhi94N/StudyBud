@@ -113,6 +113,13 @@ def room(request, pk):
     context = context = {'room': room, 'room_messages': room_messages, 'participants': participants}
     return render(request, 'base/room.html', context)
 
+def userProfile(request,pk):
+    user = User.objects.get(id=pk)
+    rooms = user.room_set.all()
+    room_messages = user.message_set.all()
+    topics = Topic.objects.all()
+    context = {'user': user, 'rooms': rooms, 'room_messages': room_messages, 'topics': topics}
+    return render(request, 'base/profile.html', context)
 @login_required(login_url='login')
 def createRoom(request):
     form = RoomForm()
@@ -121,7 +128,10 @@ def createRoom(request):
         # Fetches data from request to form
         form = RoomForm(request.POST)
         if form.is_valid():
-            form.save()
+            
+            room = form.save(commit=False)
+            room.host = request.user
+            room.save()
             #return to page based on name
             return redirect("home")
     context = {'form': form}
