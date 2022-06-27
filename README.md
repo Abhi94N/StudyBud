@@ -43,6 +43,7 @@
       6. can fetch set of child as follows: `messages = Room.message_set.all()`
 5. `admin.py` - where you register your models to site so you can view it in admin dashboard
 6. `forms.py` - similar to django serializers, you create meta and specify fields
+   1. create user creation form that overrides forms or inherits from them. These can be imported into your views
 
 ## Templates Directory in Root
 
@@ -156,4 +157,33 @@
 
 ## Prebuilt Templates
 
-1. 
+
+
+```html
+<div class="form__group">
+<label for="room_topic">Enter a Topic</label>
+{% comment %} List topic for dropdown which must match datalist id {% endcomment %}
+<input required name="topic" type="text" value="{{room.topic.name}}" list="topic-list" />
+<datalist id="topic-list">
+   <select id="room_topic">
+      {% for topic in topics %}
+      <option value="{{topic.name}}">{{topic.name}}</option>
+      {% endfor %}
+   </select>
+</datalist>
+</div>
+```
+
+## DRF
+
+1. Can create a new application or a new folder in existing app called `api` which includes
+   1. `views.py` - 
+   2. `__init__.py`
+   3. `urls.py` - api paths that are added to project urls
+   4. `serializers.py` - similar to model form 
+2. `pip install djangorestframework` and add `rest_framework` to `settings.json` of project
+
+## Uploading images
+1. PIP install pillow
+2. ` <form class="form" method="POST" action="" enctype="multipart/form-data">` - enctype must be specified to upload image
+3. `form = UserForm(request.POST, request.FILES, instance=user)` - request files from image

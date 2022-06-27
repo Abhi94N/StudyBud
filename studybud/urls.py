@@ -16,9 +16,17 @@ Including another URLconf
 from django.contrib import admin
 
 from django.urls import path, include
+#settings.py access
+from django.conf import settings
+from django.conf.urls.static import static
 
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('', include('base.urls'))
+    path('', include('base.urls')),
+    path('api/', include('base.api.urls'))
 ]
+
+#Set MEdia URL and get the document root from media root
+#connects Media ROOT to MEDIA URL
+urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

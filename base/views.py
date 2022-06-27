@@ -4,10 +4,9 @@ from django.shortcuts import render, redirect
 from django.db.models import Q
 from django.contrib.auth import authenticate, login, logout
 # register view
-from django.contrib.auth.forms import UserCreationForm
-from django.contrib.auth.models import User
-from .models import Room, Topic, Message
-from .forms import RoomForm, UserForm
+# from django.contrib.auth.models import User
+from .models import Room, Topic, Message, User
+from .forms import RoomForm, UserForm, MyUserCreationForm
 
 #Django has messages
 from django.contrib import messages
@@ -24,18 +23,18 @@ def loginPage(request):
     
     
     if request.method == 'POST':
-        username = request.POST.get('username').lower()
+        email = request.POST.get('email').lower()
         password = request.POST.get('password')
         
         # check if user exists
         try:
             #fetch username
-            user = User.objects.get(username=username)
+            user = User.objects.get(email=email)
         except:
             messages.error(request, 'User does not exist')
         
         #if user exists authenticates
-        user = authenticate(request, username=username, password=password)
+        user = authenticate(request, email=email, password=password)
 
         if user is not None:
             # adds session in database and in browser
@@ -54,12 +53,12 @@ def logoutUser(request):
 
 def registerPage(request):
     # do not need page because it is default value
-    form = UserCreationForm()
+    form = MyUserCreationForm()
     context = {'form': form}
     
     #on post submit
     if request.method == 'POST':
-        form = UserCreationForm(request.POST)
+        form = MyUserCreationForm(request.POST)
         if form.is_valid():
             #don't commit until its clean
             user = form.save(commit=False)
@@ -204,7 +203,8 @@ def updateUser(request):
     form = UserForm(instance=request.user)
     
     if request.method == 'POST':
-        form = UserForm(request.POST, instance=user)
+        #update form with request files in order to add requests
+        form = UserForm(request.POST, request.FILES, instance=user)
         if form.is_valid():
             form.save()
             return redirect('user-profile', pk=user.id)
