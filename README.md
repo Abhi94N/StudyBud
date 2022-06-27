@@ -31,7 +31,7 @@
 2. `apps.py` - provides application configuration
    1. app will have its own views that are passed here from `base.views.View`
 3. `urls.py` - where your url patterns for the app resides, configuration endpoint with views
-   1. `path('room/<str:pk>/', views.room, name="room")` -- name allows us to change the path without updating the template
+   1. `path('room/<str:pk>/', views.room, name="room")` -- name allows us to change the path without updating the template. use name when loading url href. ex. `"{% url 'user-profile' room.host.id %}"`
 4. `models.py` - where your orm for django database will reside
    1. Datatypes
       1. `CharField(max_length=200)`
@@ -148,7 +148,12 @@
 
 1. Like Templates create root static files with styles and image folder
 2. Create a variable `STATICFILES_DIRS = [BASE_DIR / 'static']` in settings.json
-3. load static using following: `{% load static %}`
-4. reference stylesheet similar to url and template `    <link rel="stylesheet" type='text/css' media='screen' href="{% static 'styles/main.css' %}">`
+3. load static using following: `{% load static %}` and must be set for each main template html page to use static folder. everything else will be configured via `block content`
+4. reference stylesheet similar to url and template `    <link rel="stylesheet" type='text/css' media='screen' href="{% static 'styles/main.css' %}">` 
 5. To add images `<img src="{% static 'images/image.png' %}">`
 6. To add user upload images
+
+
+## Prebuilt Templates
+
+1. 

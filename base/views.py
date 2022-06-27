@@ -123,18 +123,21 @@ def userProfile(request,pk):
 @login_required(login_url='login')
 def createRoom(request):
     form = RoomForm()
-    
+    topics = Topic.objects.all()
     if request.method == 'POST':
-        # Fetches data from request to form
-        form = RoomForm(request.POST)
-        if form.is_valid():
-            
-            room = form.save(commit=False)
-            room.host = request.user
-            room.save()
-            #return to page based on name
-            return redirect("home")
-    context = {'form': form}
+
+        # fetch topic to add when creating room
+        topic_name = request.POST.get('topic')
+        # get or create returns back an object or creates it in model if it doesn't exist, created will let you know whether the object exists or not
+        topic, created = Topic.objects.get_or_create(name=topic_name)
+        Room.objects.create(
+            host=request.user,
+            topic=topic,
+            name=request.POST.get('name'),
+            description=request.POST.get('description')
+        )
+        return redirect("home")
+    context = {'form': form, 'topics': topics}
     
     return render(request, 'base/room_form.html', context)
 @login_required(login_url='login')
@@ -145,19 +148,27 @@ def updateRoom(request, pk):
     # instance of form that is prefilled
     form = RoomForm(instance=room)
     
+    #get topics
+    topics = Topic.objects.all()
+    
     if request.user != room.host:
         return HttpResponse('You are not allowed here!!')
     
     if request.method == 'POST':
+        # fetch topic to add when creating room
+        topic_name = request.POST.get('topic')
+        # get or create returns back an object or creates it in model if it doesn't exist, created will let you know whether the object exists or not
+        topic, created = Topic.objects.get_or_create(name=topic_name)
         #replace the instance that was fetched
-        form = RoomForm(request.POST, instance=room)
-        if form.is_valid:
-            form.save()
-            return redirect('home')
+        room.name = request.POST.get('name')
+        room.description = request.POST.get('description')
+        room.topic = topic
+        room.save
+        return redirect('home')
         
         
     
-    context = {'form': form}
+    context = {'form': form, 'topics': topics, 'room': room}
     return render(request, 'base/room_form.html', context)
 @login_required(login_url='login')
 def deleteRoom(request, pk):
